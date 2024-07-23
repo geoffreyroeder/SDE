@@ -7,6 +7,10 @@
 %   This software is provided under the MIT License. See the accompanying 
 %   LICENSE file for details.
 
+% Get the current working directory
+current_dir = fileparts(matlab.desktop.editor.getActiveFilename);
+fprintf('Current working directory: %s\n', current_dir);
+
 %% Duffing van der Pol
 
   % Time-span
@@ -47,6 +51,10 @@
   %set(gca,'XTick',-4:2:4,'YTick',-4:2:8)
   xlabel('$x_1$'); ylabel('$x_2$')
   box on
+  
+  file_path = fullfile(current_dir, 'ode_figure.png');
+  saveas(gcf, file_path);
+  fprintf('Saved figure 1 to: %s\n', file_path);
 
 %% SDE  
     
@@ -89,13 +97,14 @@
   xlabel('$x_1$'); ylabel('$x_2$')
   box on
   
-  % Set axis limits
-  figure(3)
-  xlim([0 20])
-  xlabel('Time, $t$'); ylabel('$x$')
-  legend('$x_1(t)$','$x_2(t)$')
-  box on
+  file_path = fullfile(current_dir, 'sde_figure_1.png');
+  saveas(gcf, file_path);
+  fprintf('Saved figure 2 to: %s\n', file_path);
   
+  figure(3)
+  file_path = fullfile(current_dir, 'sde_figure_2.png');
+  saveas(gcf, file_path);
+  fprintf('Saved figure 3 to: %s\n', file_path);
   
 %% Weak approximation
 
@@ -136,6 +145,10 @@
     
   end
   
+  file_path = fullfile(current_dir, 'weak_approx_progress.png');
+  saveas(gcf, file_path);
+  fprintf('Saved figure 4 to: %s\n', file_path);
+  
   
 %% Histogram
   
@@ -156,6 +169,10 @@
     xlim([-2.2 2.2])
     %set(gca,'XTick',0:.2:1.2)
     
+  file_path = fullfile(current_dir, 'histogram.png');
+  saveas(gcf, file_path);
+  fprintf('Saved figure 5 to: %s\n', file_path);
+
   figure(6); clf
 
     % Show solution w2.0
@@ -168,3 +185,6 @@
     % Ticks
     box on
     
+  file_path = fullfile(current_dir, 'scatter_plot.png');
+  saveas(gcf, file_path);
+  fprintf('Saved figure 6 to: %s\n', file_path);
