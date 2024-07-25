@@ -23,7 +23,7 @@ def parse_args():
     parser.add_argument('--state_init', type=float, nargs=2, default=[-2.0, 1.0], help='Initial state for simulation')
     parser.add_argument('--adam_lr', type=float, default=0.01, help='Learning rate for Adam optimizer')
     parser.add_argument('--sim_seed', type=int, default=42, help='Random seed for simulation')
-    parser.add_argument('--print_freq', type=int, default=300, help='Print frequency for optimization iterations')
+    parser.add_argument('--print_freq', type=int, default=50, help='Print frequency for optimization iterations')
     return parser.parse_args()
 
 def loss_fn(key, test_alpha, tspan, target_trajectory):
@@ -58,14 +58,15 @@ def optimize_alpha(tspan, alpha_target, alpha_init, state_init, adam_lr, sim_see
     num_opt_iters = int(1e5)
     alpha_values = []
     loss_values = []
-    pbar = tqdm(total=num_opt_iters, desc="Optimizing alpha")
+    pbar = tqdm(total=num_opt_iters)
     for i in range(num_opt_iters):
         key, subkey = random.split(key)
         loss, opt_state, alpha = opt_step(subkey, opt_state, alpha)
         alpha_values.append(alpha)
         loss_values.append(loss)
+        abs_diff = abs(alpha - alpha_target)
         if i % print_freq == 0:
-            log_msg = f"iter {i}: alpha = {alpha:.4f}, loss = {loss:.4f}"
+            log_msg = f"iter {i}: loss = {loss:.4f}, abs_diff_to_true = {abs_diff:.4f}"
             pbar.set_postfix_str(log_msg)
         pbar.update(1)
     pbar.close()
